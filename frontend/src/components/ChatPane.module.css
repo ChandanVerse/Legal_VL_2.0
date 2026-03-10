@@ -1,0 +1,58 @@
+.pane {
+  flex: 1;
+  overflow-y: auto;
+  /* Ruled paper effect on the transcript */
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent calc(1.75em * 16px / 16px - 1px),
+    rgba(155, 140, 115, 0.065) calc(1.75em * 16px / 16px - 1px),
+    rgba(155, 140, 115, 0.065) calc(1.75em * 16px / 16px)
+  );
+  background-size: 100% 1.75em;
+}
+
+/* ── Empty state ── */
+.empty {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 48px;
+  text-align: center;
+}
+
+.emptyIcon {
+  color: var(--vermillion);
+  opacity: 0.1;
+  margin-bottom: 8px;
+}
+
+.emptyTitle {
+  font-family: var(--f-display);
+  font-size: 32px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink-4);
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.emptyRule {
+  width: 40px;
+  height: 1px;
+  background: var(--rule);
+}
+
+.emptySub {
+  font-family: var(--f-mono);
+  font-size: 8px;
+  font-weight: 300;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  max-width: 300px;
+  line-height: 2.2;
+}

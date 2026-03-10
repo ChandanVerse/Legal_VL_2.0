@@ -1,0 +1,186 @@
+.rail {
+  width: var(--rail-w);
+  flex-shrink: 0;
+  background: var(--vellum-2);
+  border-right: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: width 0.22s ease;
+}
+
+.rail.collapsed {
+  width: 48px;
+}
+
+/* Aged paper grain overlay */
+.rail::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 28px,
+      rgba(160, 140, 110, 0.06) 28px,
+      rgba(160, 140, 110, 0.06) 29px
+    );
+  pointer-events: none;
+}
+
+/* ── Brand ── */
+.brand {
+  padding: 28px 22px 24px;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  z-index: 1;
+}
+
+.brandIcon {
+  color: var(--vermillion);
+  opacity: 0.7;
+  display: block;
+  margin-bottom: 14px;
+}
+
+.brandName {
+  font-family: var(--f-display);
+  font-weight: 400;
+  font-style: italic;
+  font-size: 30px;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 0;
+}
+
+/* ── Actions ── */
+.actions {
+  padding: 14px;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  z-index: 1;
+}
+
+.newBtn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  color: var(--vermillion);
+  font-family: var(--f-mono);
+  font-size: 8px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 9px 12px;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.newBtn:hover:not(:disabled) {
+  background: var(--verm-dim);
+  border-color: var(--vermillion);
+}
+
+.newBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.newDot {
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: background 0.18s, border-color 0.18s;
+}
+
+.newBtn:hover:not(:disabled) .newDot {
+  background: var(--vermillion);
+  border-color: var(--vermillion);
+}
+
+/* ── Spacer ── */
+.spacer {
+  flex: 1;
+}
+
+/* ── Footer ── */
+.footer {
+  padding: 14px 22px;
+  border-top: 1px solid var(--rule);
+  position: relative;
+  z-index: 1;
+}
+
+.collapseBtn {
+  background: transparent;
+  border: 1px solid var(--rule-soft);
+  border-radius: 2px;
+  color: var(--ink-4);
+  font-family: var(--f-mono);
+  font-size: 9px;
+  padding: 4px 9px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  display: block;
+}
+
+.collapseBtn:hover {
+  border-color: var(--rule);
+  color: var(--ink-3);
+}
+
+/* ── Collapsed strip ── */
+.strip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 18px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.stripIcon {
+  color: var(--vermillion);
+  opacity: 0.6;
+}
+
+.stripBtn,
+.stripToggle {
+  background: transparent;
+  border: 1px solid var(--rule-soft);
+  border-radius: 2px;
+  color: var(--ink-4);
+  font-family: var(--f-mono);
+  font-size: 13px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+
+.stripBtn:hover:not(:disabled),
+.stripToggle:hover {
+  border-color: var(--vermillion);
+  color: var(--vermillion);
+  background: var(--verm-dim);
+}
+
+.stripBtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}

@@ -1,0 +1,145 @@
+.landing {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--vellum);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ruled paper lines — like legal foolscap */
+.landing::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent calc(2rem - 1px),
+    rgba(160, 145, 120, 0.13) calc(2rem - 1px),
+    rgba(160, 145, 120, 0.13) 2rem
+  );
+  background-size: 100% 2rem;
+  pointer-events: none;
+}
+
+/* Branding — centered in the space above the query bar */
+.top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 28px;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+/* Query bar — centered vertically, equal space above and below */
+.bottom {
+  width: 100%;
+  max-width: 600px;
+  padding: 0 32px;
+  margin-bottom: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.icon {
+  color: var(--vermillion);
+  opacity: 0.65;
+  margin-bottom: 20px;
+  animation: settle 0.6s ease-out;
+}
+
+@keyframes settle {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 0.65; transform: translateY(0); }
+}
+
+.title {
+  font-family: var(--f-display);
+  font-weight: 400;
+  font-style: italic;
+  font-size: 72px;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 0;
+  animation: settle 0.6s ease-out 0.06s both;
+}
+
+/* Input box with top + bottom rule lines */
+.frame {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-top: 1.5px solid var(--rule);
+  border-bottom: 1.5px solid var(--rule);
+  margin-top: 0;
+  transition: border-color 0.2s;
+  animation: settle 0.6s ease-out 0.18s both;
+}
+
+.frame:focus-within {
+  border-color: var(--ink-3);
+}
+
+.frame.inactive { opacity: 0.4; }
+
+.input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1.65;
+  resize: none;
+  padding: 10px 0;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.input::placeholder {
+  color: var(--ink-4);
+  font-style: italic;
+}
+
+.input:disabled { cursor: not-allowed; }
+
+.sendBtn {
+  background: transparent;
+  border: none;
+  padding: 10px 2px 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--ink-4);
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+
+.sendBtn:disabled { opacity: 0.25; cursor: not-allowed; }
+.sendBtn:not(:disabled):hover { color: var(--vermillion); }
+
+.hint {
+  margin-top: 14px;
+  font-family: var(--f-mono);
+  font-size: 7.5px;
+  font-weight: 300;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  animation: settle 0.6s ease-out 0.28s both;
+}

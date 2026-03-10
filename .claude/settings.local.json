@@ -1,7 +1,15 @@
 {
   "permissions": {
     "allow": [
-      "Bash(.venv/Scripts/python.exe:*ing for pymupdf?)"
+      "Bash(.venv/Scripts/python.exe:*)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:openrouter.ai)",
+      "Bash(mkdir:*)",
+      "mcp__plugin_context7_context7__resolve-library-id",
+      "mcp__plugin_context7_context7__query-docs",
+      "Bash(\".venv\\\\Scripts\\\\python.exe\":*)",
+      "Bash(curl:*)"
     ]
   }
 }

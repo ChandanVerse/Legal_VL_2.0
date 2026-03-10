@@ -1,0 +1,113 @@
+.wrap { margin-top: 14px; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  color: var(--ink-4);
+  font-family: var(--f-mono);
+  font-size: 7.5px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 5px 11px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.btn:hover { border-color: var(--vermillion); color: var(--vermillion); }
+
+.caret {
+  font-size: 7px;
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+.open .caret { transform: rotate(90deg); }
+
+.panel {
+  margin-top: 10px;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+  animation: expand 0.15s ease-out;
+  background: var(--vellum-2);
+}
+
+@keyframes expand {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.panelHd {
+  padding: 8px 16px;
+  background: var(--vellum-3);
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--f-mono);
+  font-size: 7px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 14px;
+  align-items: center;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.item:last-child { border-bottom: none; }
+
+.caseName {
+  font-family: var(--f-display);
+  font-size: 14px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.35;
+}
+
+.pages {
+  font-family: var(--f-mono);
+  font-size: 8.5px;
+  font-weight: 300;
+  color: var(--ink-4);
+  white-space: nowrap;
+}
+
+.conf {
+  font-family: var(--f-mono);
+  font-size: 7.5px;
+  font-weight: 400;
+  padding: 2px 7px;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+.hi  { color: var(--green);      background: rgba(29, 92, 56, 0.08);   border: 1px solid rgba(29, 92, 56, 0.2); }
+.mid { color: var(--gold-bright); background: var(--gold-glow);         border: 1px solid var(--gold-dim); }
+.lo  { color: var(--vermillion);  background: var(--verm-dim);          border: 1px solid rgba(124, 29, 29, 0.25); }
+
+.download {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  color: var(--ink-4);
+  text-decoration: none;
+  padding: 2px 6px;
+  border: 1px solid var(--rule-soft);
+  border-radius: 2px;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.download:hover {
+  color: var(--vermillion);
+  border-color: var(--vermillion);
+}

@@ -8,11 +8,13 @@ A retrieval-augmented generation (RAG) system for querying Indian Supreme Court 
 PDF → Text Extraction → Ollama (local) → Tree Index → SQLite
 
 Query → FTS5 Search → Gemini Tree Nav → Page Retrieval → Gemini Answer
+
+PDF Upload → Text Extraction → Gemini Tool Calling → search_corpus() → Gemini Answer
 ```
 
 **Ingestion** (offline, run once):
 1. Extract page text from PDFs via PyMuPDF
-2. Batch pages (10 at a time) and send to a local Ollama model
+2. Batch pages (10 at a time) and send to a local Ollama model (legal-mistral)
 3. Ollama produces a structured JSON node per batch: title, summary, key topics, section type, page range
 4. All pages + tree index stored in SQLite with FTS5 (porter stemmer)
 
@@ -22,13 +24,21 @@ Query → FTS5 Search → Gemini Tree Nav → Page Retrieval → Gemini Answer
 3. **Page retrieval** — Fetch raw page text for selected sections
 4. **Answer generation** — Gemini produces a cited answer from the retrieved pages
 
+**PDF Query** (tool-calling flow):
+1. User uploads a PDF + optional prompt via the frontend
+2. First 5 pages extracted with PyMuPDF (no Ollama needed)
+3. PDF text + prompt sent to Gemini with a `search_corpus` tool definition
+4. Gemini decides what to search for, calls `search_corpus` one or more times (max 3 rounds)
+5. Tool results (retrieved case excerpts) fed back into the conversation
+6. Gemini synthesizes a final answer with citations from all retrieved context
+
 ## Prerequisites
 
 | Requirement | Details |
 |---|---|
 | Python | 3.11+ |
-| [Ollama](https://ollama.com) | Running locally with `qwen2.5:7b` pulled |
-| Gemini API key | Free tier works; set in `.env` |
+| [Ollama](https://ollama.com) | Running locally with `legal-mistral` pulled |
+| Gemini API key | Free tier works; set `GEMINI_API_KEY` in `.env` |
 
 ## Setup
 
@@ -51,8 +61,8 @@ cp .env.example .env
 **.env file:**
 ```env
 GEMINI_API_KEY=your_key_here
-GEMINI_MODEL=gemini-2.5-pro       # optional, this is the default
-OLLAMA_MODEL=qwen2.5:7b           # optional, this is the default
+GEMINI_MODEL=gemini-2.5-flash     # optional, this is the default
+OLLAMA_MODEL=legal-mistral            # optional, this is the default
 OLLAMA_BASE_URL=http://localhost:11434  # optional
 DB_PATH=./legal.db                # optional
 ```
@@ -97,15 +107,18 @@ DB_PATH=./legal.db                # optional
 
 ```
 Legal_VL_2.0/
-├── db.py           # SQLite schema, FTS5 search, CRUD helpers
-├── llm_client.py   # Ollama and Gemini API wrappers with retry logic
-├── ingest.py       # PDF → tree index pipeline (CLI)
-├── search.py       # 4-step search pipeline (CLI)
+├── db.py              # SQLite schema, FTS5 search, CRUD helpers
+├── llm_client.py      # Ollama and Gemini API wrappers with retry logic
+├── ingest.py          # PDF → tree index pipeline (CLI)
+├── search.py          # 4-step search pipeline (CLI)
+├── tool_calling.py    # Gemini tool-calling orchestration for PDF queries
+├── api.py             # FastAPI backend (chat, PDF query, ingest endpoints)
 ├── pyproject.toml
-├── .env            # API keys (not committed)
-└── data/
-    ├── dataset_pdfs/   # 200 Supreme Court judgments
-    └── test_case/      # Single PDF for quick testing
+├── .env               # API keys (not committed)
+├── data/
+│   ├── dataset_pdfs/  # 200 Supreme Court judgments
+│   └── test_case/     # Single PDF for quick testing
+└── frontend/          # React + Vite UI
 ```
 
 ## Database Schema
@@ -122,8 +135,8 @@ case_pages_fts  -- FTS5 virtual table over page_text (porter tokenizer)
 | Env Variable | Default | Description |
 |---|---|---|
 | `GEMINI_API_KEY` | _(required)_ | Google Gemini API key |
-| `GEMINI_MODEL` | `gemini-2.5-pro` | Gemini model for search |
-| `OLLAMA_MODEL` | `qwen2.5:7b` | Ollama model for indexing |
+| `GEMINI_MODEL` | `gemini-2.5-flash` | Gemini model for search + tool calling |
+| `OLLAMA_MODEL` | `legal-mistral` | Ollama model for indexing |
 | `OLLAMA_BASE_URL` | `http://localhost:11434` | Ollama server URL |
 | `DB_PATH` | `./legal.db` | SQLite database path |
 

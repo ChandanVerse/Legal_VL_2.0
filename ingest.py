@@ -71,16 +71,6 @@ def extract_pages(pdf_path: str) -> list[tuple[int, str]]:
     return pages
 
 
-def batch_pages(
-    pages: list[tuple[int, str]], batch_size: int = BATCH_SIZE
-) -> list[list[tuple[int, str]]]:
-    """Group pages into batches of up to batch_size."""
-    batches = []
-    for i in range(0, len(pages), batch_size):
-        batches.append(pages[i : i + batch_size])
-    return batches
-
-
 def build_batch_prompt(batch: list[tuple[int, str]]) -> str:
     """Build Ollama prompt for a batch of pages."""
     start_page = batch[0][0]
@@ -99,21 +89,6 @@ def build_batch_prompt(batch: list[tuple[int, str]]) -> str:
         end_page=end_page,
         page_text=combined_text,
     )
-
-
-def make_fallback_node(batch: list[tuple[int, str]]) -> dict:
-    """Create a minimal node when Ollama fails."""
-    start_page = batch[0][0]
-    end_page = batch[-1][0]
-    combined = " ".join(text[:200] for _, text in batch)
-    return {
-        "title": f"Pages {start_page}-{end_page}",
-        "summary": combined[:500],
-        "key_topics": [],
-        "section_type": "other",
-        "start_page": start_page,
-        "end_page": end_page,
-    }
 
 
 def validate_node(node: dict, batch: list[tuple[int, str]]) -> dict:
@@ -145,9 +120,17 @@ def _process_batch(batch: list[tuple[int, str]], filename: str) -> dict:
         node = call_ollama(prompt, expect_json=True)
         node = validate_node(node, batch)
     except LLMError as e:
+        start_page, end_page = batch[0][0], batch[-1][0]
         log.warning("Ollama failed for pages %d-%d of %s: %s. Using fallback.",
-                    batch[0][0], batch[-1][0], filename, e)
-        node = make_fallback_node(batch)
+                    start_page, end_page, filename, e)
+        node = {
+            "title": f"Pages {start_page}-{end_page}",
+            "summary": " ".join(text[:200] for _, text in batch)[:500],
+            "key_topics": [],
+            "section_type": "other",
+            "start_page": start_page,
+            "end_page": end_page,
+        }
     return node
 
 
@@ -170,7 +153,7 @@ def process_pdf(pdf_path: str, conn, workers: int = 4) -> bool:
         return False
 
     page_count = pages[-1][0]  # highest page number
-    batches = batch_pages(pages)
+    batches = [pages[i:i + BATCH_SIZE] for i in range(0, len(pages), BATCH_SIZE)]
 
     # Build tree nodes via Ollama (parallel)
     with ThreadPoolExecutor(max_workers=workers) as executor:

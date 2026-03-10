@@ -3,6 +3,7 @@
 import hashlib
 import json
 import os
+import re
 import sqlite3
 
 from dotenv import load_dotenv
@@ -133,8 +134,7 @@ def search_cases(
     Returns list of dicts: {case_id, filename, page_number, snippet, rank}.
     """
     # Sanitize: strip FTS5 special chars, keep only alphanumeric words
-    import re as _re
-    clean = _re.sub(r'[^a-zA-Z0-9\s]', ' ', query)
+    clean = re.sub(r'[^a-zA-Z0-9\s]', ' ', query)
     tokens = [w for w in clean.split() if len(w) >= 3]
     if not tokens:
         tokens = query.split()[:5]

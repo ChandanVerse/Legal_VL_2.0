@@ -1,0 +1,64 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Parchment surfaces */
+  --vellum:       #f5f0e6;
+  --vellum-2:     #ece5d4;
+  --vellum-3:     #e3d9c5;
+  --vellum-4:     #d7ccb8;
+
+  /* Ruling lines */
+  --rule:         #bdb09a;
+  --rule-soft:    #cec5b2;
+
+  /* India ink */
+  --ink:          #1a1611;
+  --ink-2:        #2e2820;
+  --ink-3:        #4a4030;
+  --ink-4:        #8a7b68;
+
+  /* Vermillion — law's red: seals, corrections, emphasis */
+  --vermillion:   #7c1d1d;
+  --verm-dim:     rgba(124, 29, 29, 0.07);
+  --verm-glow:    rgba(124, 29, 29, 0.04);
+
+  /* Dark gold — illuminated headings */
+  --gold:         #7a5a18;
+  --gold-bright:  #b8861e;
+  --gold-dim:     #9a7228;
+  --gold-glow:    rgba(184, 134, 30, 0.12);
+
+  /* Status */
+  --green:        #1d5c38;
+
+  /* Aliases for component compat */
+  --crimson:      var(--vermillion);
+  --crimson-dim:  var(--verm-dim);
+  --text:         var(--ink);
+  --text-2:       var(--ink-2);
+  --text-3:       var(--ink-3);
+  --text-4:       var(--ink-4);
+  --line:         var(--rule);
+  --line-soft:    var(--rule-soft);
+  --ink-2-bg:     var(--vellum-2);
+
+  --rail-w:       220px;
+  --f-display:    'Playfair Display', 'Times New Roman', serif;
+  --f-body:       'Lora', Georgia, serif;
+  --f-mono:       'JetBrains Mono', 'Courier New', monospace;
+}
+
+html, body, #root { height: 100%; overflow: hidden; }
+
+body {
+  background: var(--vellum);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar       { width: 4px; }
+::-webkit-scrollbar-track { background: var(--vellum-2); }
+::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 2px; }
